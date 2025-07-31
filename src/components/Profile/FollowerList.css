@@ -1,0 +1,34 @@
+.follow__list {
+  margin: 1.25rem;
+  padding: 2.5rem;
+  min-width: 25rem;
+}
+
+.primary--button {
+  margin: 0.75rem 0;
+}
+
+.button--container {
+  margin: 0 4.375rem;
+  padding: 1.6875rem;
+}
+
+.follower-item {
+  margin: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.follower-avatar {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  margin-right: 0.625rem;
+}
+
+.follower-link {
+  margin-right: auto;
+  text-decoration: none;
+  color: #0366d6;
+  font-weight: 500;
+}

@@ -1,0 +1,13 @@
+.no_profile {
+  margin: 0rem 33rem;
+}
+
+.primary--button__modifier {
+  margin: 1.375rem 0.9375rem;
+  margin-left: 28rem;
+}
+
+.wrapper__header {
+  display: flex;
+  justify-content: flex-end;
+}
