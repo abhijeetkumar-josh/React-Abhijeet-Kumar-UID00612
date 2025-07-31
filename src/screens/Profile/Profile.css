@@ -1,0 +1,17 @@
+.profile__header {
+  align-items: center;
+  padding: 1.25rem 1.875rem;
+  background-color: #f5f7fa;
+  border-bottom: 0.0625rem solid #ddd;
+  border-radius: 0.5rem;
+  margin: 1.25rem;
+  top: 0;
+  position: sticky;
+}
+
+.profile__header h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
