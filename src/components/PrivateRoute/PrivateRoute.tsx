@@ -1,7 +1,6 @@
-
 import { Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../store/store';
+import { RootState } from '@store/store';
 import { PropsWithChildren } from 'react';
 
 const PrivateRoute = ({ children }: PropsWithChildren) => {

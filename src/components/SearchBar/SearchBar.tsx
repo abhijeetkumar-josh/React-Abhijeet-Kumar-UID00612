@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import "./SearchBar.css";
+import React, { useState } from 'react';
+import './SearchBar.css';
 
 interface SearchBarProps {
   onSearch: (query: string) => void;
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState('');
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -22,7 +22,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />
-      <button type="submit" className="search-button">
+      <button type="submit" className="primary--button">
         Search
       </button>
     </form>
