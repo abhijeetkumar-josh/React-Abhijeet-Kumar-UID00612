@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { UserData } from '@profile/UserCard';
+import { UserData } from '@Profile/UserCard';
 
 interface AuthState {
   user: UserData | null;
@@ -20,7 +20,7 @@ const initialState: AuthState = {
 
 export const loginUser = createAsyncThunk(
   'auth/loginUser',
-  async (credentials: { username: string | undefined; password: string }, thunkAPI) => {
+  async (credentials: { username: string | undefined; password: string | undefined }, thunkAPI) => {
     if (!credentials.username) {
       return thunkAPI.rejectWithValue('Username must be at least 1 character long');
     }
@@ -51,6 +51,11 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
       state.token = null;
     },
+    updateUserFields(state, action) {
+      if (state.user) {
+        state.user = { ...state.user, ...action.payload };
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -73,5 +78,5 @@ const authSlice = createSlice({
       });
   },
 });
-export const { logout } = authSlice.actions;
+export const { logout, updateUserFields} = authSlice.actions;
 export default authSlice.reducer;

@@ -16,10 +16,13 @@ const Login: React.FC = () => {
     const user = username.current?.value;
     const pass = password.current?.value;
     const result = await dispatch(loginUser({ username: user, password: pass }));
-    if (username.current) username.current.value = '';
-    if (password.current) password.current.value = '';
     if (loginUser.fulfilled.match(result)) {
       navigate('/profile');
+      if (username.current) username.current.value = '';
+      if (password.current) password.current.value = '';
+    }
+    else{
+      if (password.current) password.current.value = '';  
     }
   };
 

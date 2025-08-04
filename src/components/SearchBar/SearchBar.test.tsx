@@ -4,7 +4,7 @@ import SearchBar from './SearchBar';
 import '@testing-library/jest-dom';
 import { vi } from 'vitest';
 
-test('calls onClick when button is clicked', async () => {
+test('calls onSearch with input value when button is clicked', async () => {
   const handleSearch = vi.fn();
 
   render(<SearchBar onSearch={handleSearch}></SearchBar>);

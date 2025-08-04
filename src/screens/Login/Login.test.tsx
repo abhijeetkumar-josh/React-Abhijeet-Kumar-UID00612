@@ -3,11 +3,16 @@ import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
 import Login from './Login.tsx';
 import { Provider } from 'react-redux';
-import { store } from '../../store/store';
+import { configureStore } from '@reduxjs/toolkit'
+const mockStore = configureStore({
+  reducer: {
+    auth: () => ({ user: null, isAuthenticated: false, token: null }),
+  },
+});
 
 test('shows "Bad credentials" when user enters wrong personal token', async () => {
   render(
-    <Provider store={store}>
+    <Provider store={mockStore}>
       <BrowserRouter>
         <Login />
       </BrowserRouter>

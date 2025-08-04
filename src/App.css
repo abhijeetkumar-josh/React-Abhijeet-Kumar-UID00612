@@ -31,15 +31,21 @@
   padding: 0.3125rem 0.625rem;
 }
 
-.not-active {
-  background-color: black;
-  color: white;
-  border: none;
-  border-radius: 0.125rem;
-  padding: 0.3125rem 0.625rem;
-}
-
 .active:hover,
 .not-active:hover {
   cursor: pointer;
+}
+
+.focus {
+  color: #007bff;
+  outline: 2px solid #007bff;
+  outline-offset: 2px;
+}
+
+.disable {
+  background-color:gray;
+  color:black;
+  pointer-events: none;
+  border-radius: 4px;
+  padding :10px 15px ;
 }

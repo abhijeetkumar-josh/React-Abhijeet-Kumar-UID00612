@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
+
 import {
   getFollowers,
   getSuggestedUsers,
@@ -9,7 +10,7 @@ import {
 } from './githubServices';
 
 vi.mock('axios');
-const mockedAxios = axios as jest.Mocked<typeof axios>;
+const mockedAxios = vi.mocked(axios, { deep: true });
 
 const dummyToken = 'fake_token';
 const dummyUser = 'dummyuser';

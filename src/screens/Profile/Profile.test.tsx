@@ -20,7 +20,7 @@ describe('Profile Component', () => {
         }),
       },
     });
-
+    
     render(
       <Provider store={store}>
         <BrowserRouter>

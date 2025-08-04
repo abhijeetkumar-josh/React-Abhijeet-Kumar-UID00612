@@ -14,8 +14,8 @@ export default defineConfig({
       '@components': path.resolve(__dirname, 'src/components'),
       '@screens': path.resolve(__dirname, 'src/screens'),
       '@store': path.resolve(__dirname, 'src/store'),
-      '@services': path.resolve(__dirname, 'src/Services'),
-      '@profile': path.resolve(__dirname, 'src/components/Profile'),
+      '@Services': path.resolve(__dirname, 'src/Services'),
+      '@Profile': path.resolve(__dirname, 'src/components/Profile'),
     },
   }
 })

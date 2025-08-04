@@ -1,17 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState ,useRef} from 'react';
+import { useDispatch } from 'react-redux';
+import { updateUserFields } from '@store/authSlice';
 import {
   getFollowers,
   getSuggestedUsers,
   followUser,
   isFollowingUser,
-} from '@services/githubServices';
+} from '@Services/githubServices';
 import './FollowerList.css';
 import { UserData } from './UserCard';
 
 interface FollowerListProps {
   username: UserData;
   authToken: string;
-  setUser: React.Dispatch<React.SetStateAction<UserData>>;
 }
 
 function getRandomNumber(min = 0, max = 100000000): number {
@@ -20,13 +21,17 @@ function getRandomNumber(min = 0, max = 100000000): number {
 
 const per_page = 30;
 
-const FollowerList: React.FC<FollowerListProps> = ({ username, authToken, setUser }) => {
+const FollowerList: React.FC<FollowerListProps> = ({ username, authToken}) => {
   const [followers, setFollowers] = useState<UserData[]>([]);
   const [loading, setLoading] = useState(false);
-  const [follow, setFollower] = useState<UserData[]>([]);
-  const [since, setSince] = useState<number>(getRandomNumber);
+  const [suggestedUsers, setSuggestedUsers] = useState<UserData[]>([]);
+  const [since, setSince] = useState<number>(getRandomNumber());
   const [isUserFollowing, setIsUserFollowing] = useState<Record<string, boolean>>({});
   const [page, setPage] = useState<number>(1);
+  const dispatch=useDispatch();
+  const prevRef=useRef<HTMLButtonElement>(null)
+  const nextRef=useRef<HTMLButtonElement>(null)
+
 
   useEffect(() => {
     const fetchFollowers = async () => {
@@ -47,7 +52,7 @@ const FollowerList: React.FC<FollowerListProps> = ({ username, authToken, setUse
     const fetchFollower = async () => {
       try {
         const data = await getSuggestedUsers(since, authToken, per_page);
-        setFollower(data);
+        setSuggestedUsers(data);
       } catch (err) {
         console.error('Error fetching suggestions:', err);
       }
@@ -59,10 +64,7 @@ const FollowerList: React.FC<FollowerListProps> = ({ username, authToken, setUse
     try {
       await followUser(targetUsername, authToken);
       setIsUserFollowing((prev) => ({ ...prev, [targetUsername]: true }));
-      setUser((prev: UserData) => ({
-        ...prev,
-        following: (prev.following || 0) + 1,
-      }));
+      dispatch(updateUserFields({...username,following:(username.following?username.following:0)+1}));
     } catch (err) {
       console.error(`Error following ${targetUsername}:`, err);
     }
@@ -75,7 +77,7 @@ const FollowerList: React.FC<FollowerListProps> = ({ username, authToken, setUse
       const statusMap: Record<string, boolean> = {};
 
       await Promise.all(
-        follow.map(async (follower) => {
+        suggestedUsers.map(async (follower) => {
           const isFollowing = await isFollowingUser(follower.login, authToken);
           statusMap[follower.login] = isFollowing;
         })
@@ -84,16 +86,33 @@ const FollowerList: React.FC<FollowerListProps> = ({ username, authToken, setUse
       setIsUserFollowing(statusMap);
     };
 
-    if (follow.length > 0) checkFollowingStatus();
-  }, [follow, authToken]);
+    if (suggestedUsers.length > 0) checkFollowingStatus();
+  }, [suggestedUsers, authToken]);
 
   const handlePrev = () => {
-    if (page > 1) setPage(page - 1);
+    if (page > 1){
+      setPage(page - 1);
+      nextRef!.current!.classList.remove('disable');
+    }
+    else{
+      prevRef!.current!.classList.add('disable');
+    }
   };
 
   const handleNext = () => {
-    if (Math.ceil(username.followers / per_page) < page) setPage(page + 1);
+    if (page < Math.ceil(username.followers/ per_page)){
+      setPage(page + 1);
+      prevRef!.current!.classList.remove('disable');
+    }
+    else{
+      nextRef!.current!.classList.add('disable');
+    }
   };
+
+  useEffect(() => {
+    if(page === Math.ceil(username.followers/ per_page)) nextRef!.current!.classList.add('disable');
+    if(page === 1) prevRef!.current!.classList.add('disable');
+  }, []);
 
   return (
     <div className="flex--spaced">
@@ -123,16 +142,15 @@ const FollowerList: React.FC<FollowerListProps> = ({ username, authToken, setUse
             </li>
           ))}
         </ul>
-        {!loading && followers.length !== 0 && <p>No followers found.</p> && (
-          <div className="button--container flex--spaced">
-            <button onClick={handlePrev} className="primary--button">
-              prev
-            </button>
-            <button onClick={handleNext} className="primary--button">
-              next
-            </button>
-          </div>
-        )}
+        {loading && followers.length === 0 && <p>No followers found.</p>}
+        <div className="button--container flex--spaced">
+          <button onClick={handlePrev} ref={prevRef} className="primary--button">
+            prev
+          </button>
+          <button onClick={handleNext} ref={nextRef} className="primary--button">
+            next
+          </button>
+        </div>
       </div>
       <div className="follow__list">
         <div className="flex--spaced">
@@ -142,7 +160,7 @@ const FollowerList: React.FC<FollowerListProps> = ({ username, authToken, setUse
           </button>
         </div>
         <ul className="follower-list">
-          {follow.map((follower) => (
+          {suggestedUsers.map((follower) => (
             <li key={follower.login} className="follower-item">
               <img src={follower.avatar_url} alt={follower.login} className="follower-avatar" />
               <a
@@ -158,7 +176,7 @@ const FollowerList: React.FC<FollowerListProps> = ({ username, authToken, setUse
                 disabled={isUserFollowing[follower.login]}
                 className={
                   isUserFollowing[follower.login]
-                    ? 'follow-button primary--button active'
+                    ? 'follow-button primary--button active disable'
                     : 'follow-button primary--button not-active'
                 }
               >

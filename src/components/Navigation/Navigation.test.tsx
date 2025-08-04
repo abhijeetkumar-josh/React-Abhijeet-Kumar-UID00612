@@ -7,7 +7,13 @@ import Navbar from './Navigation';
 const renderWithProviders = (isAuthenticated: boolean, initialRoute: string = '/') => {
   const store = configureStore({
     reducer: {
-      auth: () => ({ isAuthenticated }),
+       auth: () => ({
+        user: null,
+        isAuthenticated,
+        loading: false,
+        error: null,
+        token: null,
+      })
     },
   });
 

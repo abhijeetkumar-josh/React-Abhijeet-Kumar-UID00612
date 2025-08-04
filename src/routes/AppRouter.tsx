@@ -1,6 +1,5 @@
-// src/routes/AppRouter.tsx
 import { Route, Routes, Navigate } from 'react-router-dom';
-import MainLayout from '../containers/Layout';
+import Layout from '../containers/Layout';
 import PrivateRoute from '@components/PrivateRoute/PrivateRoute';
 import { lazy } from 'react';
 
@@ -11,7 +10,7 @@ const Profile = lazy(() => import('@screens/Profile/Profile'));
 const AppRouter = () => {
   return (
     <Routes>
-      <Route path="/" element={<MainLayout />}>
+      <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
         <Route
           path="profile"

@@ -35,7 +35,7 @@ const UserCard: React.FC<UserCardProps> = ({ user }) => {
           <strong> Following:</strong> {user.following}
         </p>
         {user.bio && (
-          <p>
+          <p className="UserCard__par-tag">
             <strong> Bio:</strong> {user.bio}
           </p>
         )}

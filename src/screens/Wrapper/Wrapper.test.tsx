@@ -12,7 +12,7 @@ test('shows "No profile to show" when invalid user is searched', async () => {
   );
   const inputElement = screen.getByPlaceholderText('Search GitHub Users...');
   const searchButton = screen.getByText('Search');
-  await userEvent.type(inputElement, 'torvaldsisadvndvuenbfrv');
+  await userEvent.type(inputElement, 'invalid-user-12345-nonexistent');
   await userEvent.click(searchButton);
   await waitFor(() => {
     expect(screen.getByText(/No profile to show/i)).toBeInTheDocument();

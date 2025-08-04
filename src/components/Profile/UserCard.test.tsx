@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import UserCard from './UserCard.tsx';
-test('shows "Bad credentials" when user enters wrong personal token', () => {
-  const dummyUser: object = {
+test('renders user information correctly', () => {
+  const dummyUser = {
     avatar_url: 'https://avatars.githubusercontent.com/u/583231?v=4',
     login: 'octocat',
     location: 'San Francisco',
@@ -11,7 +11,7 @@ test('shows "Bad credentials" when user enters wrong personal token', () => {
     html_url: 'https://github.com/octocat',
     blog: 'https://github.blog',
     email: 'octocat@github.com',
-  };
+  } as const;
   render(
     <BrowserRouter>
       <UserCard user={dummyUser}></UserCard>

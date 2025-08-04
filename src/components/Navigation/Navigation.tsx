@@ -26,9 +26,9 @@ const Navbar: React.FC = () => {
               </Link>
             </li>
             <li>
-              <Link to="/" className="nav__link nav__link--active">
+              <span className="nav__link nav__link--active">
                 Profile
-              </Link>
+              </span>
             </li>
             <li>
               <button onClick={handleLogout} className="nav__button">
@@ -39,9 +39,9 @@ const Navbar: React.FC = () => {
         ) : (
           <>
             <li>
-              <Link to="/" className="nav__link nav__link--active">
+              <span className="nav__link nav__link--active">
                 Home
-              </Link>
+              </span>
             </li>
             <li>
               <Link to="/profile" className="nav__link">

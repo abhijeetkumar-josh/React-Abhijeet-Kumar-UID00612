@@ -1,27 +1,24 @@
-import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@store/store.tsx';
-import UserCard from '@profile/UserCard.tsx';
-import FollowerList from '@profile/FollowerList.tsx';
-import { UserData } from '@profile/UserCard.tsx';
+import UserCard from '@Profile/UserCard.tsx';
+import FollowerList from '@Profile/FollowerList.tsx';
 import './Profile.css';
 
 const Profile: React.FC = () => {
   const { user } = useSelector((state: RootState) => state.auth);
-  const [User, setUser] = useState<UserData>(user);
   const { token } = useSelector((state: RootState) => state.auth);
   return (
     <div>
       <div className="profile__header flex--spaced">
-        <h2>Welcome, {User?.login}</h2>
+        <h2>Welcome, {user?.login}</h2>
       </div>
       <div className="profile__content flex--spaced">
-        <UserCard user={User}></UserCard>
+        <UserCard user={user || {}}></UserCard>
       </div>
       <div className="profile__following flex--center">
         <div>
           {token ? (
-            <FollowerList username={User} authToken={token} setUser={setUser}></FollowerList>
+            <FollowerList username={user} authToken={token} ></FollowerList>
           ) : (
             'Login to see the followers list'
           )}

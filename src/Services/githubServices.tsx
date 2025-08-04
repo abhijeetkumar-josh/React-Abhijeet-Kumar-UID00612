@@ -1,4 +1,5 @@
 import axios, { AxiosError } from 'axios';
+import { UserData } from '@components/Profile/UserCard';
 
 export const getFollowers = async (
   username: string,
@@ -6,8 +7,9 @@ export const getFollowers = async (
   page: number,
   per_page: number
 ) => {
+  const encodedUsername = encodeURIComponent(username);
   return getUsersData(
-    `https://api.github.com/users/${username}/followers?per_page=${per_page}&page=${page}`,
+    `https://api.github.com/users/${encodedUsername}/followers?per_page=${per_page}&page=${page}`,
     token
   );
 };
@@ -48,14 +50,18 @@ export const isFollowingUser = async (targetUsername: string, token: string): Pr
       },
     });
     return res.status === 204;
-  } catch {
-    return false;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response?.status === 404) {
+      return false;
+    }
+    throw error;
   }
 };
 
-export const getUserByUsername = async (username: string) => {
+export const getUserByUsername = async (username: string):Promise<UserData | null>  => {
   try {
-    const response = await axios.get(`https://api.github.com/users/${username}`, {
+    const encodedUsername = encodeURIComponent(username);
+    const response = await axios.get(`https://api.github.com/users/${encodedUsername}`, {
       headers: {
         Accept: 'application/vnd.github+json',
       },
@@ -66,11 +72,8 @@ export const getUserByUsername = async (username: string) => {
     if (axios.isAxiosError(error)) {
       const axiosError = error as AxiosError;
       if (axiosError.response?.status === 404) {
-        return {};
+        return null;
       }
-      console.error('GitHub API Axios error:', axiosError.message);
-    } else {
-      console.error('Unknown error:', error);
     }
     throw error;
   }
